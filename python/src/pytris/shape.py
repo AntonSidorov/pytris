@@ -1,5 +1,5 @@
 import numpy as np
-from misc import Orientation, inBounds
+from .misc import Orientation, inBounds
 from enum import Enum
 
 
