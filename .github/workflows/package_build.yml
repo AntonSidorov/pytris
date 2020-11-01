@@ -47,8 +47,8 @@ jobs:
             Automatic release of pytris wheel by github.
           draft: false
           prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset
+      - name: Upload Wheel
+        id: upload-wheel
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -56,8 +56,8 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./python/dist
           asset_name: rl_pytris-0.0.1-py3-none-any.whl
-      - name: Upload Release Asset
-        id: upload-release-asset
+      - name: Upload tarball
+        id: upload-tarball
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
