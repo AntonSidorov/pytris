@@ -85,8 +85,6 @@ class Tetris():
     if(self.timer < 1 or move is Move.D):
       self.timer = 5
       self.current.y += 1
-    if(not np.all(self.rendered == 0)):
-      print(self.rendered)
     # If the piece is out of bounds - move it back up.
     if(not self.current.willBeValid(self.occupied)):
       # I have no idea how i did this lol

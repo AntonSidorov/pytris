@@ -60,7 +60,6 @@ class Shape(object):
         non_empty = 0
         axis = orientation.axis()
         indices = orientation.iter(size)
-        # print([x for x in indices])
         for i in indices:
             arr = np.take(self.current(), i, axis)
             if not np.all(arr == 0):
@@ -76,7 +75,6 @@ class Shape(object):
         left = self.firstNonEmpty(Orientation.LEFT) + self.x
         right = size + self.firstNonEmpty(Orientation.RIGHT) + self.x
         bottom = size + self.firstNonEmpty(Orientation.BOTTOM) + self.y
-        print(left, right, bottom, self.x, self.y, size)
         return inBounds(right, bottom, left)
 
     def boundaries(self):
@@ -94,17 +92,16 @@ class Shape(object):
     def toOccupied(self, occupied: np.ndarray):
         sX, sY, fX, fY = self.occupiedRanges()
         if np.all(self.currentView() == 0):
-            print("no!")
+            # TODO: figure out this issue
+            print("FIXME: Current view is empty for some reason.")
         if occupied[sY:fY, sX:fX].shape != self.currentView().shape:
-            print("No!")
+            print("FIXME: Occupied shape not equal to current view shape")
         occupied[sY:fY, sX:fX] += self.currentView()
 
     def willOverlap(self, occupied: np.ndarray):
         sX, sY, fX, fY = self.occupiedRanges()
-        print(self.occupiedRanges())
-        print(self.currentView())
         if occupied[sY:fY, sX:fX].shape != self.currentView().shape and sY > 0:
-            print("No!")
+            print("FIXME: occupied shape not equal to current view shape and sY > 0")
         result = occupied[sY:fY, sX:fX] + self.currentView()
         return result.shape[0] > 0 and np.any(result > 1)
 
