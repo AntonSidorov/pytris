@@ -1,0 +1,36 @@
+.tetris-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(20, 1fr);
+  border-top: 1px solid #0006;
+  border-left: 1px solid #0006;
+}
+
+.cell {
+  width: 40px;
+  height: 40px;
+  border-bottom: 1px solid #0006;
+  border-right: 1px solid #0006;
+}
+
+.cell.filled {
+  background: black;
+}
+
+.cell.error {
+  background: #f44;
+}
+
+.player {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  min-width: 300px;
+}

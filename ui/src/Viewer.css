@@ -1,0 +1,20 @@
+.viewer {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.viewer .controls {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+}
+
+.viewer .controls textarea {
+  flex: 1;
+}
+
+textarea {
+  border: 1px solid #0003;
+  border-radius: 4px;
+}
