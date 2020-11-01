@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pytris", # Replace with your own username
-    version="0.0.7",
+    version="0.0.8",
     author="Example Author",
     author_email="author@example.com",
     description="A small example package",
@@ -22,5 +22,5 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.8',
+    python_requires='>=3.6',
 )
