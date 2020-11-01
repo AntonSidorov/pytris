@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pytris", # Replace with your own username
-    version="0.0.4",
+    version="0.0.5",
     author="Example Author",
     author_email="author@example.com",
     description="A small example package",
@@ -14,6 +14,9 @@ setuptools.setup(
     url="https://github.com/AntonSidorov/pytris/python",
     packages=setuptools.find_packages(where='src'),
     package_dir={'': 'src'},
+    install_requires=[
+        'numpy'
+    ],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
