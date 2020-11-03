@@ -27,13 +27,13 @@ class Orientation(Enum):
 
 
 class Move(Enum):
-    N = 0
-    D = 1
-    M = 2
-    P = 3
-    R = 4
-    C = 5
-    H = 6
+    D = 0
+    M = 1
+    P = 2
+    R = 3
+    C = 4
+    H = 5
+#    N = 6
 
 
 def inBounds(right: int, bottom: int, left: int):
