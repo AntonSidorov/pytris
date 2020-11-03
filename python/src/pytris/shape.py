@@ -1,5 +1,6 @@
 import numpy as np
 from .misc import Orientation, inBounds
+from .calculations import fneResults
 from enum import Enum
 
 
@@ -54,18 +55,22 @@ class Shape(object):
 
         return self.current()[sY:fY, sX:fX]
 
-    # TODO: optimise through dynamic programming
     def firstNonEmpty(self, orientation: Orientation):
-        size = self.size()
-        non_empty = 0
-        axis = orientation.axis()
-        indices = orientation.iter(size)
-        for i in indices:
-            arr = np.take(self.current(), i, axis)
-            if not np.all(arr == 0):
-                return i
+        result = fneResults[self.type.value][orientation.value]
+        if(result is None):
+            print("pre-calculation seems to be broken")
+        # Original calculation. Now the results are stored directly in calculations.py
+            size = self.size()
+            non_empty = 0
+            axis = orientation.axis()
+            indices = orientation.iter(size)
+            for i in indices:
+                arr = np.take(self.current(), i, axis)
+                if not np.all(arr == 0):
+                    return i
+        return result
 
-    # TODO: optimise through dynamic programming
+
     def positiveFNE(self, orientation: Orientation):
         size = self.size()
         return self.firstNonEmpty(orientation) + size + 1
