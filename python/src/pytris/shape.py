@@ -93,15 +93,18 @@ class Shape(object):
         sX, sY, fX, fY = self.occupiedRanges()
         if np.all(self.currentView() == 0):
             # TODO: figure out this issue
-            print("FIXME: Current view is empty for some reason.")
+            pass
+            # print("FIXME: Current view is empty for some reason.")
         if occupied[sY:fY, sX:fX].shape != self.currentView().shape:
-            print("FIXME: Occupied shape not equal to current view shape")
+            pass
+            # print("FIXME: Occupied shape not equal to current view shape")
         occupied[sY:fY, sX:fX] += self.currentView()
 
     def willOverlap(self, occupied: np.ndarray):
         sX, sY, fX, fY = self.occupiedRanges()
         if occupied[sY:fY, sX:fX].shape != self.currentView().shape and sY > 0:
-            print("FIXME: occupied shape not equal to current view shape and sY > 0")
+            pass
+            # print("FIXME: occupied shape not equal to current view shape and sY > 0")
         result = occupied[sY:fY, sX:fX] + self.currentView()
         return result.shape[0] > 0 and np.any(result > 1)
 
