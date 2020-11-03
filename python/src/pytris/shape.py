@@ -1,6 +1,6 @@
 import numpy as np
 from .misc import Orientation, inBounds
-from .calculations import fneResults
+from .calculations import fneResults, positiveFNEResults, boundariesResults, isInBoundsResults
 from enum import Enum
 
 
@@ -28,7 +28,7 @@ class Shape(object):
 
     def __str__(self):
         return "<Shape> \n{{ type: {}, x: {}, y: {}, index: {}, current:\n{}\n}}".format(
-            self.type.name, self.x, self.y, self.index, self.current()
+            self.type.name, self.x, self.y, self.index, self.current
         )
 
     @staticmethod
@@ -41,6 +41,7 @@ class Shape(object):
     def size(self):
         return 4 if (self.type == ShapeType.I or self.type == ShapeType.O) else 3
 
+    @property
     def current(self):
         return self.states[self.index]
 
@@ -53,41 +54,56 @@ class Shape(object):
         if fY + self.y < 0:
             fY = 0 - self.y
 
-        return self.current()[sY:fY, sX:fX]
+        return self.current[sY:fY, sX:fX]
 
     def firstNonEmpty(self, orientation: Orientation):
-        result = fneResults[self.type.value][orientation.value]
-        if(result is None):
-            print("pre-calculation seems to be broken")
+        try:
+            result = fneResults[self.type.value][self.index][orientation.value]
+            return result
+        except:
+            print("FNE pre-calculation seems to be broken")
         # Original calculation. Now the results are stored directly in calculations.py
             size = self.size()
             non_empty = 0
             axis = orientation.axis()
             indices = orientation.iter(size)
             for i in indices:
-                arr = np.take(self.current(), i, axis)
+                arr = np.take(self.current, i, axis)
                 if not np.all(arr == 0):
                     return i
-        return result
 
 
     def positiveFNE(self, orientation: Orientation):
-        size = self.size()
-        return self.firstNonEmpty(orientation) + size + 1
+        try:
+            result = positiveFNEResults[self.type.value][self.index][orientation.value]
+            return result
+        except:
+            print("positiveFNE pre-calculation seems to be broken")
+            size = self.size()
+            return self.firstNonEmpty(orientation) + size + 1
 
     def isInBounds(self):
-        size = self.size()
-        left = self.firstNonEmpty(Orientation.LEFT) + self.x
-        right = size + self.firstNonEmpty(Orientation.RIGHT) + self.x
-        bottom = size + self.firstNonEmpty(Orientation.BOTTOM) + self.y
-        return inBounds(right, bottom, left)
+        try: 
+            result = isInBoundsResults[self.type.value][self.index][self.x][self.y] 
+            return result
+        except:
+            size = self.size()
+            left = self.firstNonEmpty(Orientation.LEFT) + self.x
+            right = size + self.firstNonEmpty(Orientation.RIGHT) + self.x
+            bottom = size + self.firstNonEmpty(Orientation.BOTTOM) + self.y
+            return inBounds(right, bottom, left)
 
     def boundaries(self):
-        sX = self.firstNonEmpty(Orientation.LEFT)
-        sY = self.firstNonEmpty(Orientation.TOP)
-        fX = self.positiveFNE(Orientation.RIGHT)
-        fY = self.positiveFNE(Orientation.BOTTOM)
-        return np.array((sX, sY, fX, fY), dtype=np.int)
+        try:
+            result = boundariesResults[self.type.value][self.index]
+            return np.array(result, dtype=np.int)
+        except:
+            print("Boundaries pre-calculation seems to be broken")
+            sX = self.firstNonEmpty(Orientation.LEFT)
+            sY = self.firstNonEmpty(Orientation.TOP)
+            fX = self.positiveFNE(Orientation.RIGHT)
+            fY = self.positiveFNE(Orientation.BOTTOM)
+            return np.array((sX, sY, fX, fY), dtype=np.int)
 
     def occupiedRanges(self):
         coords = self.boundaries() + np.array((self.x, self.y, self.x, self.y))
@@ -97,12 +113,9 @@ class Shape(object):
     def toOccupied(self, occupied: np.ndarray):
         sX, sY, fX, fY = self.occupiedRanges()
         if np.all(self.currentView() == 0):
-            # TODO: figure out this issue
-            pass
-            # print("FIXME: Current view is empty for some reason.")
+            return
         if occupied[sY:fY, sX:fX].shape != self.currentView().shape:
-            pass
-            # print("FIXME: Occupied shape not equal to current view shape")
+            print("FIXME: Occupied shape not equal to current view shape")
         occupied[sY:fY, sX:fX] += self.currentView()
 
     def willOverlap(self, occupied: np.ndarray):
