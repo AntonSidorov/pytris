@@ -33,7 +33,6 @@ class Move(Enum):
     R = 3
     C = 4
     H = 5
-#    N = 6
 
 
 def inBounds(right: int, bottom: int, left: int):

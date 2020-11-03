@@ -26,7 +26,6 @@ class Tetris():
     self.dead = False
     self.score = 0
     self.timer = TIMER
-    self.log = ""
 
   def moveMP(self, move: Move):
     assert(move is Move.P or move is move.M)
