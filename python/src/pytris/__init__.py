@@ -37,7 +37,7 @@ class Tetris():
     
   def moveRC(self, move: Move):
     assert(move is Move.R or move is move.C)
-    clockwise = True if Move.R else False
+    clockwise = move is Move.R
     self.current.rotate(clockwise)
     if(not self.current.willBeValid(self.occupied)):
       self.current.x += 1
