@@ -6,14 +6,8 @@ import sys
 TIMER = 5
 
 class Tetris():
-  occupied = np.zeros((20,10), dtype=np.int)
-  rendered = np.zeros((20,10), dtype=np.int)
   current: Shape
   next: Shape
-  log = ""
-  dead = False
-  score = 0
-  timer = TIMER
 
   def spawn(self):
     stype = np.random.choice(list(ShapeType))
@@ -27,6 +21,12 @@ class Tetris():
     self.current = self.spawn()
     self.next = self.spawn()
     self.log = self.current.toLog() + self.next.toLog()
+    self.occupied = np.zeros((20,10), dtype=np.int)
+    self.rendered = np.zeros((20,10), dtype=np.int)
+    self.dead = False
+    self.score = 0
+    self.timer = TIMER
+    self.log = ""
 
   def moveMP(self, move: Move):
     assert(move is Move.P or move is move.M)
